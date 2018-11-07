@@ -29,6 +29,7 @@ export default createStore(
 
 const allProjects = state => state.projects;
 const allSites = state => state.sites;
+const allTrees = state => state.trees;
 
 export const getProjects = createSelector(
   [allProjects],
@@ -38,4 +39,9 @@ export const getProjects = createSelector(
 export const getSites = createSelector(
   [allSites],
   sites => sites.ids.map(id => sites.byId[id])
+);
+
+export const getTrees = createSelector(
+  [allTrees],
+  sites => trees.ids.map(id => trees.byId[id])
 );
