@@ -39,7 +39,7 @@ class Sidebar extends Component {
       return { id, name, items };
     });
 
-    return <AccordianMenu items={listItems} onClickSubitem={this.props.centerMapOnSite} />
+    return <AccordianMenu items={listItems} onClickSubItem={this.props.centerMapOnSite} />
   }
 }
 

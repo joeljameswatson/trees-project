@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Project from './Project';
+import Item from './Item';
 
 class AccordianMenu extends Component {
   state = {}
@@ -16,11 +16,11 @@ class AccordianMenu extends Component {
       this.props.items.map((item, i) => {
         const itemKey = `item-${i}`;
         return (
-          <Project
+          <Item
             key={itemKey}
-            project={item}
+            item={item}
             onClickItem={() => this.toggleSubItemsVisible(itemKey)}
-            onClickSubitem={this.props.onClickSubitem}
+            onClickSubItem={this.props.onClickSubItem}
             subItemsVisible={this.state[itemKey]}
           />
         )
