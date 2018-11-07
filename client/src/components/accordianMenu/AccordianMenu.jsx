@@ -18,12 +18,13 @@ class AccordianMenu extends Component {
         <ul>
           {
             this.props.items.map((item, i) => {
-              const itemKey = `item-${i}`;
+              const itemKey = `${item.name}-${i}`;
               return (
                 <Item
                   key={itemKey}
-                  item={item}
+                  label={item.name}
                   onClickItem={() => this.toggleSubItemsVisible(itemKey)}
+                  subItems={item.items}
                   onClickSubItem={this.props.onClickSubItem}
                   subItemsVisible={this.state[itemKey]}
                 />
