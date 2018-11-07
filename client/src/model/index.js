@@ -4,11 +4,13 @@ import { createSelector } from 'reselect';
 
 import projects from './projects';
 import sites from './sites';
+import trees from './trees';
 import map from './map';
 
 const reducers = combineReducers({
   projects,
   sites,
+  trees,
   map
 });
 
@@ -37,4 +39,3 @@ export const getSites = createSelector(
   [allSites],
   sites => sites.ids.map(id => sites.byId[id])
 );
-  
