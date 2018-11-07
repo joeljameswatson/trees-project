@@ -10,7 +10,7 @@ import { centerMapOnSite, mapSetCenter, mapSetZoom } from '../model/map';
 class InteractiveMap extends Component {
   render() {
     const { bounding } = this.props.currentSite;
-    
+
     const boundingFeature = turf.polygon([[
       [bounding.left, bounding.top],
       [bounding.right, bounding.top],
@@ -20,9 +20,9 @@ class InteractiveMap extends Component {
     ]], { name: 'Bounding Area' });
 
     return (
-      <Map { ...this.props }>
+      <Map {...this.props}>
         <Sources>
-          <GeoJSON id="bounding-box" data={ boundingFeature } />
+          <GeoJSON id="bounding-box" data={boundingFeature} />
         </Sources>
         <Layer
           id="bounding-box"
@@ -30,6 +30,15 @@ class InteractiveMap extends Component {
           paint={{
             'line-width': 2,
             'line-color': '#fff'
+          }}
+          source="bounding-box"
+        />
+        <Layer
+          id="opaque-fill"
+          type="fill"
+          paint={{
+            'fill-color': '#ffffff',
+            'fill-opacity': 0.1
           }}
           source="bounding-box"
         />
