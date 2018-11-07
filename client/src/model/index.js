@@ -45,3 +45,8 @@ export const getTrees = createSelector(
   [allTrees],
   trees => trees.ids.map(id => trees.byId[id])
 );
+
+export const getTreesForSelectedSite = state => {
+  const treeIds = state.sites.byId[state.sites.selected].trees
+  return treeIds.map(id => state.trees.byId[id])
+}
