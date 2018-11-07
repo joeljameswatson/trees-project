@@ -12,6 +12,11 @@ class AccordianMenu extends Component {
     })
   }
 
+  handleOnClickSubItem = (e, id) => {
+    e.stopPropagation();
+    this.props.onClickSubItem(id);
+  }
+
   render() {
     return (
       <div className={styles.list}>
@@ -25,7 +30,7 @@ class AccordianMenu extends Component {
                   label={item.name}
                   onClickItem={() => this.toggleSubItemsVisible(itemKey)}
                   subItems={item.items}
-                  onClickSubItem={this.props.onClickSubItem}
+                  onClickSubItem={this.handleOnClickSubItem}
                   subItemsVisible={this.state[itemKey]}
                 />
               )
