@@ -24,7 +24,6 @@ class InteractiveMap extends Component {
       return turf.point([long, lat], { height });
     });
     const treesFeatureCollection = turf.featureCollection(treePoints);
-    console.log(treesFeatureCollection)
 
     return (
       <Map {...this.props}>
