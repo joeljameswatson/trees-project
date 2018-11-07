@@ -10,7 +10,7 @@ import { getTreesForSelectedSite } from '../model'
 
 class InteractiveMap extends Component {
   render() {
-    const { bounding, treesForSelectedSite } = this.props.currentSite;
+    const { currentSite: { bounding }, treesForSelectedSite } = this.props;
 
     const boundingFeature = turf.polygon([[
       [bounding.left, bounding.top],
@@ -20,10 +20,14 @@ class InteractiveMap extends Component {
       [bounding.left, bounding.top]
     ]], { name: 'Bounding Area' });
 
+    const treePoints = treesForSelectedSite.map(tree => turf.point([tree.long, tree.lat]));
+    const treesFeatureCollection = turf.featureCollection(treePoints);
+
     return (
       <Map {...this.props}>
         <Sources>
           <GeoJSON id="bounding-box" data={boundingFeature} />
+          <GeoJSON id="tree-locations" data={treesFeatureCollection} />
         </Sources>
         <Layer
           id="bounding-box"
@@ -42,6 +46,15 @@ class InteractiveMap extends Component {
             'fill-opacity': 0.1
           }}
           source="bounding-box"
+        />
+        <Layer
+          id="tree-locations"
+          type="circle"
+          paint={{
+            'circle-radius': 3,
+            'circle-color': '#ffffff'
+          }}
+          source="tree-locations"
         />
       </Map>
     );
