@@ -1,0 +1,19 @@
+.list {
+  ul {
+    background-color: #eaeaea;
+    margin: 0;
+    list-style: none;
+    list-style-type: none;
+    padding: 0px;
+  }
+}
+
+.item {
+  display: inline-block;
+  width: 100%;
+  padding: 15px;
+  &:hover {
+    background-color: #f1f0f0;
+    cursor: pointer;
+  }
+}

@@ -5,7 +5,7 @@ import { getProjects, getSites } from '../model';
 
 import { centerMapOnSite } from '../model/map';
 
-import List from '../components/List';
+import AccordianMenu from '../components/accordianMenu';
 
 class Sidebar extends Component {
   render() {
@@ -32,9 +32,14 @@ class Sidebar extends Component {
       ]
     */
 
-    const items = [];
+    const listItems = this.props.projects.map(({ id, name, sites }) => {
+      const items = sites.map(id => {
+        return this.props.sites.find(site => site.id === id);
+      });
+      return { id, name, items };
+    });
 
-    return <List items={ items } onClickSubitem={ this.props.centerMapOnSite } />
+    return <AccordianMenu items={listItems} onClickSubItem={this.props.centerMapOnSite} />
   }
 }
 
