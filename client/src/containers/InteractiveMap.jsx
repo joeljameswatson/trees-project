@@ -6,10 +6,11 @@ import * as turf from '@turf/turf';
 import Map, { Layer, Sources, GeoJSON } from '../components/map';
 
 import { centerMapOnSite, mapSetCenter, mapSetZoom } from '../model/map';
+import { getTreesForSelectedSite } from '../model'
 
 class InteractiveMap extends Component {
   render() {
-    const { bounding } = this.props.currentSite;
+    const { bounding, treesForSelectedSite } = this.props.currentSite;
 
     const boundingFeature = turf.polygon([[
       [bounding.left, bounding.top],
@@ -49,6 +50,7 @@ class InteractiveMap extends Component {
 
 function mapStateToProps(state) {
   return {
+    treesForSelectedSite: getTreesForSelectedSite(state),
     currentSite: state.sites.byId[state.sites.selected],
     center: state.map.center,
     zoom: state.map.zoom
