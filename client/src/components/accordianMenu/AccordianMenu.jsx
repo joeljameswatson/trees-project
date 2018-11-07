@@ -5,7 +5,7 @@ class AccordianMenu extends Component {
   render() {
     return (
       this.props.items.map(item => {
-        return <Project project={item} />
+        return <Project project={item} onClickSubitem={this.props.onClickSubitem} />
       })
     );
   }
