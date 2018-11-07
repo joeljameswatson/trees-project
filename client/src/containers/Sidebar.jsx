@@ -5,7 +5,7 @@ import { getProjects, getSites } from '../model';
 
 import { centerMapOnSite } from '../model/map';
 
-import AccordianMenu from '../components/AccordianMenu';
+import AccordianMenu from '../components/accordianMenu';
 
 class Sidebar extends Component {
   render() {

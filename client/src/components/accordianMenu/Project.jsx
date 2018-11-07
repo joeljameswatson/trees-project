@@ -2,11 +2,13 @@ import React from 'react';
 import Site from './Site';
 
 export default function Project(props) {
-  const sites = props.project.items.map(site => <Site site={site} onClickSubitem={props.onClickSubitem} />)
   return (
-    <ul>
-      <li>{props.project.name}</li>
-      <ul>{sites}</ul>
-    </ul>
+    <li onClick={props.onClickItem}>
+      {props.project.name}
+      <ul>
+        {props.subItemsVisible && props.project.items.map((site, i) =>
+          <Site key={`subItem-${i}`} site={site} onClickSubitem={props.onClickSubitem} />)}
+      </ul>
+    </li>
   );
 }
