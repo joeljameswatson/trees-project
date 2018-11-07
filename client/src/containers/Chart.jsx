@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { GradientDarkgreenGreen } from '@vx/gradient';
+
+import { getTreesForSelectedSite } from '../model'
 
 class Chart extends Component {
   state = {
@@ -53,4 +56,11 @@ class Chart extends Component {
   }
 }
 
-export default Chart;
+function mapStateToProps(state) {
+  return {
+    treesForSelectedSite: getTreesForSelectedSite(state)
+  };
+}
+
+export default connect(mapStateToProps)(Chart);
+
