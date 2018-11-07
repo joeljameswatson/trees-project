@@ -20,8 +20,11 @@ class InteractiveMap extends Component {
       [bounding.left, bounding.top]
     ]], { name: 'Bounding Area' });
 
-    const treePoints = treesForSelectedSite.map(tree => turf.point([tree.long, tree.lat]));
+    const treePoints = treesForSelectedSite.map(({long, lat, height}) => {
+      return turf.point([long, lat], { height });
+    });
     const treesFeatureCollection = turf.featureCollection(treePoints);
+    console.log(treesFeatureCollection)
 
     return (
       <Map {...this.props}>
@@ -52,7 +55,13 @@ class InteractiveMap extends Component {
           type="circle"
           paint={{
             'circle-radius': 3,
-            'circle-color': '#ffffff'
+            'circle-color': {
+              'property': 'height',
+              'stops': [
+                [0, 'white'],
+                [70, 'darkgreen']
+              ]
+            }
           }}
           source="tree-locations"
         />
