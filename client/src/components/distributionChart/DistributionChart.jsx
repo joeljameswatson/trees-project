@@ -13,9 +13,9 @@ export default function DistributionChart(props) {
 
   const margin = {
     top: 35,
-    bottom: 35,
-    left: 35,
-    right: 20
+    bottom: 30,
+    left: 20,
+    right: 10
   };
 
   const xMax = width - margin.left - margin.right;
@@ -24,7 +24,7 @@ export default function DistributionChart(props) {
   const xScale = scaleBand({
     rangeRound: [0, xMax],
     domain: data.map(x),
-    padding: 0.1
+    padding: 0.3
   });
   
   const yScale = scaleLinear({
@@ -44,6 +44,10 @@ export default function DistributionChart(props) {
       />
       <Group top={margin.top} left={margin.left}>
         <AxisLeft
+          tickLabelProps={() => ({
+            fill: '#ffffff',
+            fontSize: 9,
+          })}
           hideAxisLine
           hideTicks
           scale={yScale}
@@ -51,12 +55,18 @@ export default function DistributionChart(props) {
           left={0}
         />
         <AxisBottom
+          left={10}
+          tickLabelProps={(value, index) => ({
+            fill: '#ffffff',
+            fontSize: 9,
+            textAnchor: 'middle',
+          })}
           hideAxisLine
           hideTicks
           scale={xScale}
           top={yMax}
         />
-        <Group top={0}>
+        <Group top={0} left={10}>
           {data.map((d, i) => {
             const barHeight = yMax - yScale(y(d));
             return (
