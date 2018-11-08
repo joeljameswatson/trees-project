@@ -10,10 +10,24 @@ class Chart extends Component {
     height: 0
   };
 
+  treeCounts = []
+
   componentDidMount() {
     window.addEventListener('resize', this.setSize);
     
     this.setSize();
+
+    // TODO: move this to componentDidUpdate / selector
+    const ranges = ['0m - 10m', '10m - 20m', '20m - 30m', '30m - 40m', '40m - 50m', '50m - 60m', '60m - 70m'];
+    const initialDataStructure = ranges.map(range => ({ range, count: 0 }));
+    this.treeCounts = this.props.treesForSelectedSite.reduce((accumulator, tree) => {
+      const rangePosition = parseInt(tree.height/ 10, 10);
+      if (!accumulator[rangePosition]) {
+        return accumulator;
+      }
+      accumulator[rangePosition].count ++
+      return accumulator
+    }, initialDataStructure);
   }
 
   setSize = (event) => {
