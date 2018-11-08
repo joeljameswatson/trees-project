@@ -51,7 +51,6 @@ export function treesSetCurrent(id) {
 const initial = {
   status: null,
   error: null,
-  selected: null,
   byId: {},
   ids: []
 };
