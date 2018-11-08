@@ -47,8 +47,7 @@ class Chart extends Component {
         <DistributionChart 
           data={ this.props.data } 
           height={ this.state.height }
-          width={ this.state.width } 
-          setRef={ this.state.width } 
+          width={ this.state.width }
         />
       </svg>
     )
