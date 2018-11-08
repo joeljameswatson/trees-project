@@ -30,9 +30,8 @@ export default createStore(
 const allProjects = state => state.projects;
 const allSites = state => state.sites;
 const allTrees = state => state.trees;
-const getSelectedSite = state => state.sites.byId[state.sites.selected];
-const getAllSitesById = state => state.sites.byId;
 const getAllTreesById = state => state.trees.byId;
+const getSelectedSite = state => state.sites.byId[state.sites.selected];
 
 export const getProjects = createSelector(
   [allProjects],
@@ -57,32 +56,14 @@ export const getTreesForSelectedSite = createSelector(
 export const getTreeCountsForSelectedSite = createSelector(
   [getTreesForSelectedSite],
   trees => {
-    const ranges = ['0m - 10m', '10m - 20m', '20m - 30m', '30m - 40m', '40m - 50m', '50m - 60m', '60m - 70m'];
-    const initialDataStructure = ranges.map(range => ({ range, count: 0 }));
     const treeCounts = trees.reduce((accumulator, tree) => {
       const rangePosition = parseInt(tree.height/ 10, 10);
-      if (!accumulator[rangePosition]) {
+      if (accumulator[rangePosition] === undefined) {
         return accumulator;
       }
-      accumulator[rangePosition].count ++
+      accumulator[rangePosition] = accumulator[rangePosition] +1
       return accumulator
-    }, initialDataStructure);
+    }, [0,0,0,0,0,0,0]);
   return treeCounts;
   }
 )
-
-// export const getTreeCountsForSelectedSite = state => {
-//   const ranges = ['0m - 10m', '10m - 20m', '20m - 30m', '30m - 40m', '40m - 50m', '50m - 60m', '60m - 70m'];
-//   const initialDataStructure = ranges.map(range => ({ range, count: 0 }));
-//   const treesForSelectedSite = getTreesForSelectedSite(state);
-//   const treeCounts = treesForSelectedSite.reduce((accumulator, tree) => {
-//     const rangePosition = parseInt(tree.height/ 10, 10);
-//     if (!accumulator[rangePosition]) {
-//       return accumulator;
-//     }
-//     accumulator[rangePosition].count ++
-//     return accumulator
-//   }, initialDataStructure);
-//   return treeCounts;
-// }
-

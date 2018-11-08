@@ -7,7 +7,9 @@ import { Bar } from "@vx/shape";
 
 export default function DistributionChart(props) {
   const { data, width, height } = props; 
-    
+  
+  const chartData = data.map((count, index) => ({ count, range: `range-label${index}`}));
+
   const x = d => d.range;
   const y = d => d.count;
 
@@ -23,13 +25,13 @@ export default function DistributionChart(props) {
 
   const xScale = scaleBand({
     rangeRound: [0, xMax],
-    domain: data.map(x),
+    domain: chartData.map(x),
     padding: 0.3
   });
   
   const yScale = scaleLinear({
     rangeRound: [yMax, 0],
-    domain: [0, Math.max(...data.map(y))]
+    domain: [0, Math.max(...chartData.map(y))]
   });
   
   return (
@@ -56,6 +58,11 @@ export default function DistributionChart(props) {
         />
         <AxisBottom
           left={10}
+          tickFormat={(value, index) => {
+            
+            return `${index || ''}0m - ${index + 1}0m`
+         
+          }}
           tickLabelProps={(value, index) => ({
             fill: '#ffffff',
             fontSize: 9,
@@ -67,7 +74,7 @@ export default function DistributionChart(props) {
           top={yMax}
         />
         <Group top={0} left={10}>
-          {data.map((d, i) => {
+          {chartData.map((d, i) => {
             const barHeight = yMax - yScale(y(d));
             return (
               <Group key={`bar-${x(d)}`}>
