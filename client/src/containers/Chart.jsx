@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { GradientDarkgreenGreen } from '@vx/gradient';
 import { scaleBand, scaleLinear } from "@vx/scale";
+import { AxisBottom, AxisLeft } from "@vx/axis";
+import { Group } from "@vx/group";
+import { Bar } from "@vx/shape";
 
 import { getTreesForSelectedSite } from '../model'
 
@@ -67,7 +70,7 @@ class Chart extends Component {
       domain: this.treeCounts.map(x),
       padding: 0.1
     });
-
+    
     const yScale = scaleLinear({
       rangeRound: [yMax, 0],
       domain: [0, Math.max(...this.treeCounts.map(y))]
@@ -90,6 +93,40 @@ class Chart extends Component {
           height={height}
           fill={`url(#gradient)`}
         />
+        <Group top={margin.top} left={margin.left}>
+          <AxisLeft
+            hideAxisLine
+            hideTicks
+            scale={yScale}
+            top={0}
+            left={0}
+          />
+          <AxisBottom
+            hideAxisLine
+            hideTicks
+            scale={xScale}
+            top={yMax}
+            stroke={"#1b1a1e"}
+            tickTextFill={"#1b1a1e"}
+          />
+          <Group top={0}>
+            {this.treeCounts.map((d, i) => {
+              const barHeight = yMax - yScale(y(d));
+              return (
+                <Group key={`bar-${x(d)}`}>
+                  <Bar
+                    width={xScale.bandwidth()}
+                    height={barHeight}
+                    x={xScale(x(d))}
+                    y={yMax - barHeight}
+                    fill="rgba(23, 233, 217, .5)"
+                    data={{ x: x(d), y: y(d) }}
+                  />
+                </Group>
+              );
+            })}
+          </Group>
+        </Group>
       </svg>
     );
   }
