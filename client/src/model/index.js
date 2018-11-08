@@ -59,10 +59,11 @@ export const getTreeCountsForSelectedSite = createSelector(
     const treeCounts = trees.reduce((accumulator, tree) => {
       const rangePosition = parseInt(tree.height/ 10, 10);
       if (accumulator[rangePosition] === undefined) {
-        return accumulator;
+        return [...accumulator];
       }
-      accumulator[rangePosition] = accumulator[rangePosition] +1
-      return accumulator
+      let shallowCopy = [...accumulator];
+      shallowCopy[rangePosition] = shallowCopy[rangePosition] +1;
+      return shallowCopy;
     }, [0,0,0,0,0,0,0]);
   return treeCounts;
   }
