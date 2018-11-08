@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { GradientDarkgreenGreen } from '@vx/gradient';
-import { scaleBand, scaleLinear } from "@vx/scale";
-import { AxisBottom, AxisLeft } from "@vx/axis";
-import { Group } from "@vx/group";
-import { Bar } from "@vx/shape";
 
+import DistributionChart from '../components/distributionChart';
 import { getTreeCountsForSelectedSite } from '../model'
 
 class Chart extends Component {
@@ -37,91 +33,31 @@ class Chart extends Component {
 
   render() {
     const { width, height } = this.state;
-    const { treeCounts } = this.props; 
-    
-    const x = d => d.range;
-    const y = d => d.count;
 
-    const margin = {
-      top: 60,
-      bottom: 60,
-      left: 80,
-      right: 80
-    };
-  
-    const xMax = width - margin.left - margin.right;
-    const yMax = height - margin.top - margin.bottom;
+    //  /* This is a hack to first set the size based on percentage
+    //  then query for the size so the chart can be scaled to the window size.
+    //  The second render is caused by componentDidMount(). */
 
-    const xScale = scaleBand({
-      rangeRound: [0, xMax],
-      domain: treeCounts.map(x),
-      padding: 0.1
-    });
-    
-    const yScale = scaleLinear({
-      rangeRound: [yMax, 0],
-      domain: [0, Math.max(...treeCounts.map(y))]
-    });
-    
-    /* This is a hack to first set the size based on percentage
-       then query for the size so the chart can be scaled to the window size.
-       The second render is caused by componentDidMount(). */
     if(width < 100 || height < 100) {
       return <svg ref={ this.setRef } width={'100%'} height={'100%'}></svg>
     }
 
     return (
       <svg ref={ this.setRef } width={'100%'} height={'100%'}>
-        <GradientDarkgreenGreen id="gradient" />
-        <rect
-          x={0}
-          y={0}
-          width={width}
-          height={height}
-          fill={`url(#gradient)`}
+        <DistributionChart 
+          data={ this.props.data } 
+          height={ this.state.height }
+          width={ this.state.width } 
+          setRef={ this.state.width } 
         />
-        <Group top={margin.top} left={margin.left}>
-          <AxisLeft
-            hideAxisLine
-            hideTicks
-            scale={yScale}
-            top={0}
-            left={0}
-          />
-          <AxisBottom
-            hideAxisLine
-            hideTicks
-            scale={xScale}
-            top={yMax}
-            stroke={"#1b1a1e"}
-            tickTextFill={"#1b1a1e"}
-          />
-          <Group top={0}>
-            {treeCounts.map((d, i) => {
-              const barHeight = yMax - yScale(y(d));
-              return (
-                <Group key={`bar-${x(d)}`}>
-                  <Bar
-                    width={xScale.bandwidth()}
-                    height={barHeight}
-                    x={xScale(x(d))}
-                    y={yMax - barHeight}
-                    fill="rgba(23, 233, 217, .5)"
-                    data={{ x: x(d), y: y(d) }}
-                  />
-                </Group>
-              );
-            })}
-          </Group>
-        </Group>
       </svg>
-    );
+    )
   }
 }
 
 function mapStateToProps(state) {
   return {
-    treeCounts: getTreeCountsForSelectedSite(state)
+    data: getTreeCountsForSelectedSite(state)
   };
 }
 
