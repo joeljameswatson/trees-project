@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { GradientDarkgreenGreen } from '@vx/gradient';
+import { scaleBand, scaleLinear } from "@vx/scale";
 
 import { getTreesForSelectedSite } from '../model'
 
@@ -47,6 +48,30 @@ class Chart extends Component {
 
   render() {
     const { width, height } = this.state;
+    
+    const x = d => d.range;
+    const y = d => d.count;
+
+    const margin = {
+      top: 60,
+      bottom: 60,
+      left: 80,
+      right: 80
+    };
+  
+    const xMax = width - margin.left - margin.right;
+    const yMax = height - margin.top - margin.bottom;
+
+    const xScale = scaleBand({
+      rangeRound: [0, xMax],
+      domain: this.treeCounts.map(x),
+      padding: 0.1
+    });
+
+    const yScale = scaleLinear({
+      rangeRound: [yMax, 0],
+      domain: [0, Math.max(...this.treeCounts.map(y))]
+    });
     
     /* This is a hack to first set the size based on percentage
        then query for the size so the chart can be scaled to the window size.
