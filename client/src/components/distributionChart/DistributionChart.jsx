@@ -8,7 +8,7 @@ import { Bar } from "@vx/shape";
 export default function DistributionChart(props) {
   const { data, width, height } = props; 
   
-  const chartData = data.map((count, index) => ({ count, range: `range-label${index}`}));
+  const chartData = data.map((count, index) => ({ count, range: `range ${index}`}));
 
   const x = d => d.range;
   const y = d => d.count;
@@ -58,11 +58,7 @@ export default function DistributionChart(props) {
         />
         <AxisBottom
           left={10}
-          tickFormat={(value, index) => {
-            
-            return `${index || ''}0m - ${index + 1}0m`
-         
-          }}
+          tickFormat={(value, index) => `${index || ''}0m - ${index + 1}0m`}
           tickLabelProps={(value, index) => ({
             fill: '#ffffff',
             fontSize: 9,
