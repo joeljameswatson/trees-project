@@ -6,7 +6,7 @@ import { AxisBottom, AxisLeft } from "@vx/axis";
 import { Group } from "@vx/group";
 import { Bar } from "@vx/shape";
 
-import { getTreesForSelectedSite } from '../model'
+import { getTreeCountsForSelectedSite } from '../model'
 
 class Chart extends Component {
   state = {
@@ -14,24 +14,10 @@ class Chart extends Component {
     height: 0
   };
 
-  treeCounts = []
-
   componentDidMount() {
     window.addEventListener('resize', this.setSize);
     
     this.setSize();
-
-    // TODO: move this to componentDidUpdate / selector
-    const ranges = ['0m - 10m', '10m - 20m', '20m - 30m', '30m - 40m', '40m - 50m', '50m - 60m', '60m - 70m'];
-    const initialDataStructure = ranges.map(range => ({ range, count: 0 }));
-    this.treeCounts = this.props.treesForSelectedSite.reduce((accumulator, tree) => {
-      const rangePosition = parseInt(tree.height/ 10, 10);
-      if (!accumulator[rangePosition]) {
-        return accumulator;
-      }
-      accumulator[rangePosition].count ++
-      return accumulator
-    }, initialDataStructure);
   }
 
   setSize = (event) => {
@@ -51,6 +37,7 @@ class Chart extends Component {
 
   render() {
     const { width, height } = this.state;
+    const { treeCounts } = this.props; 
     
     const x = d => d.range;
     const y = d => d.count;
@@ -67,13 +54,13 @@ class Chart extends Component {
 
     const xScale = scaleBand({
       rangeRound: [0, xMax],
-      domain: this.treeCounts.map(x),
+      domain: treeCounts.map(x),
       padding: 0.1
     });
     
     const yScale = scaleLinear({
       rangeRound: [yMax, 0],
-      domain: [0, Math.max(...this.treeCounts.map(y))]
+      domain: [0, Math.max(...treeCounts.map(y))]
     });
     
     /* This is a hack to first set the size based on percentage
@@ -110,7 +97,7 @@ class Chart extends Component {
             tickTextFill={"#1b1a1e"}
           />
           <Group top={0}>
-            {this.treeCounts.map((d, i) => {
+            {treeCounts.map((d, i) => {
               const barHeight = yMax - yScale(y(d));
               return (
                 <Group key={`bar-${x(d)}`}>
@@ -134,7 +121,7 @@ class Chart extends Component {
 
 function mapStateToProps(state) {
   return {
-    treesForSelectedSite: getTreesForSelectedSite(state)
+    treeCounts: getTreeCountsForSelectedSite(state)
   };
 }
 
